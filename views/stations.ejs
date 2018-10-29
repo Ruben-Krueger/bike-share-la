@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BikeShareLA</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <% include partials/head.ejs%>
+</head>
+<body>
+<div class="container-fluid">
+    <h1>BikeShareLA</h1>
+    <div class="row text-center">
+        <div class="col-md">
+            <h1>Start Stations</h1>
+            <canvas id="start-stations" width="500" height="500"></canvas>
+        </div>
+        <div class="col-md">
+            <h1>End Stations</h1>
+            <canvas id="end-stations" width="500" height="500"></canvas>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Stations Map</h1>
+            <canvas id="start-stations" width="500" height="500"></canvas>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    var start_stations = ['3053.0', '3000.0', '3009.0', '4108.0', '3039.0', '3045.0', '3080.0', '3057.0', '3060.0', '3010.0', '3020.0', '3081.0', '3025.0', '3079.0', '3033.0', '3059.0', '3077.0', '3054.0', '3078.0', '3065.0', '3040.0', '3036.0', '3037.0', '3028.0', '3018.0', '3021.0', '3011.0', '3046.0', '3066.0', '3056.0', '3026.0', '3024.0', '3058.0', '3029.0', '3076.0', '3019.0', '3016.0', '3023.0', '3051.0', '3075.0', '3008.0', '3047.0', '3052.0', '3062.0', '3074.0', '3032.0', '3027.0', '3006.0', '3007.0', '3063.0', '3048.0', '3034.0', '3049.0', '3068.0', '3055.0', '3038.0', '3035.0', '3067.0', '3022.0', '3082.0', '3042.0', '3014.0', '3031.0', '3064.0', '3005.0', '3030.0', '3069.0'];
+    var ctx = document.getElementById("start-stations");
+    var trip_types = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: start_stations,
+            datasets: [{
+                label: 'Rides',
+                data: [13,
+                    29,
+                    56,
+                    108,
+                    115,
+                    187,
+                    191,
+                    380,
+                    383,
+                    427,
+                    528,
+                    593,
+                    626,
+                    693,
+                    709,
+                    742,
+                    802,
+                    865,
+                    879,
+                    992,
+                    1023,
+                    1153,
+                    1174,
+                    1179,
+                    1211,
+                    1254,
+                    1257,
+                    1348,
+                    1425,
+                    1461,
+                    1562,
+                    1646,
+                    1808,
+                    1902,
+                    1903,
+                    1910,
+                    1953,
+                    1980,
+                    2062,
+                    2125,
+                    2156,
+                    2230,
+                    2253,
+                    2325,
+                    2341,
+                    2466,
+                    2557,
+                    2708,
+                    2785,
+                    2949,
+                    3005,
+                    3037,
+                    3154,
+                    3252,
+                    3270,
+                    3306,
+                    3406,
+                    3797,
+                    3893,
+                    3908,
+                    4015,
+                    4571,
+                    4629,
+                    4661,
+                    4883,
+                    5059,
+                    5138],
+                backgroundColor: 'rgba(255,99,132,1)',
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false,
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        maxRotation: 90,
+                        minRotation: 80
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: "Station ID"
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: "Rides starting at station"
+                    }
+                }]
+            }
+        }
+    });
+
+
+    var end_stations = ['3053.0', '3000.0', '3009.0', '4108.0', '3039.0', '3045.0', '3080.0', '3057.0', '3060.0', '3010.0', '3020.0', '3081.0', '3025.0', '3079.0', '3033.0', '3059.0', '3077.0', '3054.0', '3078.0', '3065.0', '3040.0', '3036.0', '3037.0', '3028.0', '3018.0', '3021.0', '3011.0', '3046.0', '3066.0', '3056.0', '3026.0', '3024.0', '3058.0', '3029.0', '3076.0', '3019.0', '3016.0', '3023.0', '3051.0', '3075.0', '3008.0', '3047.0', '3052.0', '3062.0', '3074.0', '3032.0', '3027.0', '3006.0', '3007.0', '3063.0', '3048.0', '3034.0', '3049.0', '3068.0', '3055.0', '3038.0', '3035.0', '3067.0', '3022.0', '3082.0', '3042.0', '3014.0', '3031.0', '3064.0', '3005.0', '3030.0', '3069.0'];
+    ctx = document.getElementById("end-stations");
+    var trip_types = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: start_stations,
+            datasets: [{
+                label: 'Rides',
+                data: [12,
+                    68,
+                    115,
+                    155,
+                    178,
+                    319,
+                    389,
+                    399,
+                    412,
+                    521,
+                    604,
+                    644,
+                    713,
+                    717,
+                    722,
+                    737,
+                    760,
+                    778,
+                    811,
+                    840,
+                    883,
+                    955,
+                    983,
+                    1016,
+                    1134,
+                    1203,
+                    1212,
+                    1399,
+                    1402,
+                    1424,
+                    1427,
+                    1481,
+                    1490,
+                    1491,
+                    1497,
+                    1861,
+                    1906,
+                    1939,
+                    1944,
+                    1960,
+                    1993,
+                    1994,
+                    2175,
+                    2204,
+                    2242,
+                    2276,
+                    2361,
+                    2460,
+                    2489,
+                    2495,
+                    2778,
+                    2826,
+                    3032,
+                    3156,
+                    3194,
+                    3481,
+                    3513,
+                    3763,
+                    4224,
+                    4337,
+                    4605,
+                    4703,
+                    5072,
+                    5293,
+                    5385,
+                    5517,
+                    6262,],
+                backgroundColor: 'rgba(255,99,132,1)',
+                borderColor: [
+                    'rgba(255,99,132,1)',
+
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false,
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        maxRotation: 90,
+                        minRotation: 80
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: "Station ID"
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: "Rides ending at station "
+                    }
+                }]
+            }
+        }
+    });
+
+</script>
+
+
+
+
+<!--<script>-->
+    <!--var DATA_COUNT = 16;-->
+    <!--var MIN_XY = -150;-->
+    <!--var MAX_XY = 100;-->
+
+    <!--// var utils = Samples.utils;-->
+    <!--//-->
+    <!--// utils.srand(110);-->
+
+    <!--function colorize(opaque, context) {-->
+        <!--var value = context.dataset.data[context.dataIndex];-->
+        <!--var x = value.x / 100;-->
+        <!--var y = value.y / 100;-->
+        <!--var r = x < 0 && y < 0 ? 250 : x < 0 ? 150 : y < 0 ? 50 : 0;-->
+        <!--var g = x < 0 && y < 0 ? 0 : x < 0 ? 50 : y < 0 ? 150 : 250;-->
+        <!--var b = x < 0 && y < 0 ? 0 : x > 0 && y > 0 ? 250 : 150;-->
+        <!--var a = opaque ? 1 : 0.5 * value.v / 1000;-->
+
+        <!--return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';-->
+    <!--}-->
+
+
+    <!--var data = {-->
+        <!--datasets: [{-->
+            <!--data: generateData()-->
+        <!--}]-->
+    <!--};-->
+
+    <!--var options = {-->
+        <!--aspectRatio: 1,-->
+        <!--legend: false,-->
+        <!--tooltips: false,-->
+
+        <!--elements: {-->
+            <!--point: {-->
+                <!--backgroundColor: colorize.bind(null, false),-->
+
+                <!--borderColor: colorize.bind(null, true),-->
+
+                <!--borderWidth: function(context) {-->
+                    <!--return Math.min(Math.max(1, context.datasetIndex + 1), 8);-->
+                <!--},-->
+
+                <!--hoverBackgroundColor: 'transparent',-->
+
+                <!--hoverBorderColor: function(context) {-->
+                    <!--return utils.color(context.datasetIndex);-->
+                <!--},-->
+
+                <!--hoverBorderWidth: function(context) {-->
+                    <!--var value = context.dataset.data[context.dataIndex];-->
+                    <!--return Math.round(8 * value.v / 1000);-->
+                <!--},-->
+
+                <!--radius: function(context) {-->
+                    <!--var value = context.dataset.data[context.dataIndex];-->
+                    <!--var size = context.chart.width;-->
+                    <!--var base = Math.abs(value.v) / 1000;-->
+                    <!--return (size / 24) * base;-->
+                <!--}-->
+            <!--}-->
+        <!--}-->
+    <!--};-->
+
+    <!--var ctx = document.getElementById("stations-map");-->
+
+    <!--var chart = new Chart(ctx, {-->
+        <!--type: 'bubble',-->
+        <!--data: data,-->
+        <!--options: options-->
+    <!--});-->
+
+<!--</script>-->
+
+<% include partials/navbar.ejs%>
+
+</body>
+</html>

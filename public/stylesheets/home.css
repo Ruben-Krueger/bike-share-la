@@ -1,0 +1,13 @@
+body {
+    background: url("../images/snazzy-image (1).png");
+    /*background-repeat: no-repeat;*/
+    -webkit-background-size: cover;
+    background-attachment: fixed;
+    /*-webkit-filter: blur(50px); !* Safari 6.0 - 9.0 *!*/
+    /*filter: blur(50px);*/
+}
+
+.main {
+    color: white;
+
+}

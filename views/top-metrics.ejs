@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BikeShareLA</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <% include partials/head.ejs%>
+</head>
+<body class="bg-light">
+
+<div class="container-fluid">
+    <h1>BikeShareLA</h1>
+    <div class="row text-center">
+        <div class="col-md-6">
+            <h1>Ridership over time</h1>
+            <canvas id="over-time" width="400" height="400"></canvas>
+        </div>
+        <div class="col-md-6">
+            <h1>Ridership by pass type</h1>
+            <canvas id="pt" width="400" height="400"></canvas>
+        </div>
+
+    </div>
+    <div class="row text-center">
+        <div class="col-md-6">
+            <h1>Top 5 stations</h1>
+            <div id="map"></div>
+        </div>
+        <div class="col-md-6">
+            <h1>Ridership by hour</h1>
+            <canvas id="hour" width="400" height="400"></canvas>
+        </div>
+    </div>
+
+
+</div>
+
+
+<!--<script>-->
+    <!--var ctx = document.getElementById("trip-types");-->
+    <!--var trip_types = new Chart(ctx, {-->
+        <!--type: 'bar',-->
+        <!--data: {-->
+            <!--labels: ["Round Trip", "One Way"],-->
+            <!--datasets: [{-->
+                <!--label: 'Ride Types',-->
+                <!--data: [12785, 119642],-->
+                <!--backgroundColor: [-->
+                    <!--'rgba(255, 99, 132, 0.2)',-->
+                    <!--'rgba(54, 162, 235, 0.2)',-->
+                <!--],-->
+                <!--borderColor: [-->
+                    <!--'rgba(255,99,132,1)',-->
+                    <!--'rgba(54, 162, 235, 1)',-->
+
+                <!--],-->
+                <!--borderWidth: 1-->
+            <!--}]-->
+        <!--},-->
+        <!--options: {-->
+            <!--responsive: false,-->
+            <!--scales: {-->
+                <!--xAxes: [{-->
+                    <!--ticks: {-->
+                        <!--maxRotation: 90,-->
+                        <!--minRotation: 80-->
+                    <!--}-->
+                <!--}],-->
+                <!--yAxes: [{-->
+                    <!--ticks: {-->
+                        <!--beginAtZero: true-->
+                    <!--}-->
+                <!--}]-->
+            <!--}-->
+        <!--}-->
+    <!--});-->
+
+<!--</script>-->
+
+
+<script>
+
+    // global map variable
+    var map;
+
+    let geocoder;
+
+
+    function initMap() {
+
+        // LA
+        var myLatLng = {lat: 34.044701, lng: -118.25244099999999};
+
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 4,
+            center: myLatLng
+        });
+
+        var coords = [{lat: 34.044701, lng:  -118.25244099999999}, {lat: 34.04855, lng: -118.25904799999999}, {lat: 34.05088, lng: -118.248253}, {lat: 34.04681, lng: -118.25698100000001}];
+
+
+        for(var i = 0; i < coords.length; i ++) {
+            var marker = new google.maps.Marker({
+                position: coords[i],
+                map: map,
+                title: 'Hello World!'
+            });
+        }
+
+
+
+    }
+</script>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLRPVgRK749OxEcDQ4sDYpwZynhAVChTg&callback=initMap">
+</script>
+<script src="https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyBLRPVgRK749OxEcDQ4sDYpwZynhAVChTg"></script>
+
+<!--[('00', 715),-->
+<!--('01', 567),-->
+<!--('02', 422),-->
+<!--('03', 312),-->
+<!--('04', 332),-->
+<!--('05', 436),-->
+<!--('06', 1416),-->
+<!--('07', 4040),-->
+<!--('08', 5525),-->
+<!--('09', 4280),-->
+<!--('10', 3213),-->
+<!--('11', 4368),-->
+<!--('12', 5838),-->
+<!--('13', 5460),-->
+<!--('14', 4505),-->
+<!--('15', 4514),-->
+<!--('16', 6272),-->
+<!--('17', 7867),-->
+<!--('18', 6989),-->
+<!--('19', 4985),-->
+<!--('20', 3603),-->
+<!--('21', 2503),-->
+<!--('22', 1762),-->
+<!--('23', 1380)]-->
+<script>
+    var pass_types = ['Monthly Pass', 'Flex Pass', 'Walk-up', 'Staff Annual'];
+    var ctx = document.getElementById("hour");
+    var trip_types = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['12AM', '1AM', '2AM', '3AM', '4AM', '5AM', '6AM', '7AM', '8AM', '9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '5PM', '6PM', '7PM', '8PM', '9PM', '10PM', '11PM'],
+            datasets: [{
+                label: pass_types[0],
+                data: [715, 567, 422, 312, 332, 436, 1416, 4040, 5525, 4280, 3213, 4368, 5838, 5460, 4505, 4514, 6272, 7867, 6989, 4985, 3603, 2503, 1762, 1380],
+                backgroundColor: [
+                    'rgba(255,99,132,1)',
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                ],
+                borderWidth: 1,
+                fill: false
+            }, {
+                label: pass_types[1],
+                data: [104, 72, 31, 13, 8, 17, 80, 202, 483, 597, 465, 707, 721, 757, 630, 584, 571, 776, 809, 626, 502, 368, 267, 127],
+                backgroundColor: [
+                    'rgb(153, 102, 255)'
+                ],
+                borderColor: [
+                    'rgb(153, 102, 255)'
+                ],
+                borderWidth: 1,
+                fill: false
+            }, {
+                label: pass_types[2],
+                data: [961, 706, 417, 121, 79, 109, 246, 484, 870, 1391, 1719, 2536, 3444, 3519, 3317, 3215, 3124, 3071, 2635, 2320, 1879, 2003, 1796, 1262],
+                backgroundColor: [
+                    "rgb(54, 162, 235)"
+                ],
+                borderColor: [
+                    "rgb(54, 162, 235)"
+
+                ],
+                borderWidth: 1,
+                fill: false
+            }, {
+                label: pass_types[3],
+                data: [3, 1, 25, 42, 15, 13, 37, 31, 33, 42, 18, 31, 26, 17, 15, 11, 8, 9, 5],
+                backgroundColor: [
+                    "rgb(75, 192, 192)"
+                ],
+                borderColor: [
+                    "rgb(75, 192, 192)"
+                ],
+                borderWidth: 1,
+                fill: false
+            }
+
+            ],
+
+        },
+        options: {
+            responsive: false,
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        maxRotation: 90,
+                        minRotation: 80
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: "Hour"
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: "Number of Rides"
+                    }
+                }]
+            }
+        }
+    });
+
+</script>
+
+
+
+
+<script>
+    var ctx = document.getElementById("over-time");
+    var trip_types = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ["July", "August", "September", "October", "November", "December", "January", "February", "March"],
+
+            datasets: [{
+                label: 'Rides',
+                data: [11420, 24153, 19866, 18159, 14430, 10613, 10347, 9533, 13906],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false,
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        maxRotation: 90,
+                        minRotation: 80
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: "Number of rides"
+                    }
+                }]
+            }
+        }
+    });
+
+</script>
+
+<script>
+    var pass_types = ['Monthly Pass', 'Flex Pass', 'Walk-up', 'Staff Annual'];
+    var ctx = document.getElementById("pt");
+    var trip_types = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ["July", "August", "September", "October", "November", "December", "January", "February", "March"],
+
+            datasets: [{
+                label: pass_types[0],
+                data: [9355, 13193, 10668, 10742, 9379, 6960, 6401, 6155, 8451],
+                backgroundColor: [
+                    'rgba(255,99,132,1)',
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                ],
+                borderWidth: 1,
+                fill: false
+            }, {
+                label: pass_types[1],
+                data: [1667, 1586, 1178, 1266, 901, 627, 670, 599, 1023],
+                backgroundColor: [
+                    'rgb(153, 102, 255)'
+                ],
+                borderColor: [
+                    'rgb(153, 102, 255)'
+                ],
+                borderWidth: 1,
+                fill: false
+            }, {
+                label: pass_types[2],
+                data: [398, 9374, 8020, 5994, 4057, 2894, 3276, 2779, 4432],
+                backgroundColor: [
+                    "rgb(54, 162, 235)"
+                ],
+                borderColor: [
+                    "rgb(54, 162, 235)"
+
+                ],
+                borderWidth: 1,
+                fill: false
+            }, {
+                label: pass_types[3],
+                data: [0, 0, 0, 157, 93, 132, 0, 0, 0],
+                backgroundColor: [
+                    "rgb(75, 192, 192)"
+                ],
+                borderColor: [
+                    "rgb(75, 192, 192)"
+                ],
+                borderWidth: 1,
+                fill: false
+            }
+
+
+
+
+            ],
+
+        },
+        options: {
+            responsive: false,
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        maxRotation: 90,
+                        minRotation: 80
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: "Number of rides"
+                    }
+                }]
+            }
+        }
+    });
+
+</script>
+
+
+<% include partials/navbar.ejs%>
+</body>
+</html>
